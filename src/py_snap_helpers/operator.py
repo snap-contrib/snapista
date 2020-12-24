@@ -1,4 +1,3 @@
-#import snappy
 from types import SimpleNamespace
 from snappy import GPF, jpy
 from .operatorparams import OperatorParams
@@ -56,44 +55,19 @@ class Operator(SimpleNamespace):
 
             if self.operator == 'Write' and param.getName()=='formatName':
 
-                print('\t\tPossible values: {}\n'.format(self._get_write_formats()))
+                print('\t\tPossible values: {}\n'.format(self._get_formats('Write')))
 
             elif self.operator == 'Read' and param.getName()=='formatName':
 
-                print('\t\tPossible values: {}\n'.format(self._get_read_formats()))
+                print('\t\tPossible values: {}\n'.format(self._get_formats('Read')))
 
             else:
 
                 print('\t\tPossible values: {}\n'.format(list(param.getValueSet())))
 
-    @staticmethod
-    def _get_write_formats():
-        """This function provides a human readable list of SNAP Write operator formats.
-
-        Args:
-            None.
-
-        Returns
-            Human readable list of SNAP Write operator formats.
-
-        Raises:
-            None.
-        """
-        ProductIOPlugInManager = jpy.get_type('org.esa.snap.core.dataio.ProductIOPlugInManager')
-
-        write_plugins = ProductIOPlugInManager.getInstance().getAllWriterPlugIns()
-
-        write_formats = []
-
-        while write_plugins.hasNext():
-            plugin = write_plugins.next()
-            write_formats.append(plugin.getFormatNames()[0])
-
-        return write_formats
-
     @staticmethod    
-    def _get_read_formats():
-        """This function provides a human readable list of SNAP Write operator formats.
+    def _get_formats(method):
+        """This function provides a human readable list of SNAP Read or Write operator formats.
 
         Args:
             None.
@@ -105,9 +79,14 @@ class Operator(SimpleNamespace):
             None.
         """
         ProductIOPlugInManager = jpy.get_type('org.esa.snap.core.dataio.ProductIOPlugInManager')
-
-        plugins = ProductIOPlugInManager.getInstance().getAllReaderPlugIns()
-
+    
+        if method == 'Read':
+            plugins = ProductIOPlugInManager.getInstance().getAllReaderPlugIns()
+        elif  method == 'Write':
+            plugins = ProductIOPlugInManager.getInstance().getAllWriterPlugIns()
+        else:
+            raise ValueError
+            
         formats = []
 
         while plugins.hasNext():
