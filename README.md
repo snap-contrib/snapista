@@ -1,4 +1,4 @@
-# py_snap_helpers
+# py-snap-helpers - A SNAP GPT Python wrapper
 
 ## About py_snap_helpers
 
