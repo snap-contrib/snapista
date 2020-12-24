@@ -16,7 +16,7 @@ class Operator(SimpleNamespace):
 
     def __str__(self):
 
-        return '{}\n{}'.format(self.operator, self.to_dict())
+        return '{}:\n\t{}'.format(self.operator, '\n\t'.join(['{}=\'{}\''.format(key, value) for key, value in self.to_dict().items()]))
 
     def __repr__(self):
 
