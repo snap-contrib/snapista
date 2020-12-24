@@ -1,10 +1,8 @@
 import os
-import lxml.etree as etree
-from snappy import GPF
-### 
 import subprocess
 import tempfile
-
+import lxml.etree as etree
+from snappy import GPF
 
 
 class Graph():
@@ -15,35 +13,35 @@ class Graph():
     Attributes:
         None.
     """
-    
+
     def __init__(self, wdir='.'):
         self.root = etree.Element('graph')
-    
+
         version = etree.SubElement(self.root, 'version')
         version.text = '1.0'
         self.pid = None
         self.p = None
         self.wdir = wdir
         self.gpt_path = self.get_gpt_cmd()
-        
+
         if not self.gpt_path:
-            
+
             raise Exception('gpt not found')
 
     def __str__(self):
-       
+
         return 'gpt binary: {}\nworking dir: {}\n\n{}'.format(self.gpt_path,
                                      self.wdir,
                                      etree.tostring(self.root, 
                                                     pretty_print=True).decode('utf-8')).replace('\\n', '\n') 
-        
+
     def __repr__(self):
-        
+
         return 'Graph(wdir=\'{}\')'.format(self.wdir)
-    
+
     @staticmethod
     def get_gpt_cmd():
-    
+
         gpt_cmd = None
 
         for p in os.environ['PATH'].split(':'):
@@ -56,9 +54,10 @@ class Graph():
 
         return gpt_cmd
 
+
     @staticmethod
     def list_operators():
-        """This function provides a Python dictionary with all SNAP operators. 
+        """This function provides a Python dictionary with all SNAP operators.
 
         Args:
             None.
@@ -82,7 +81,8 @@ class Graph():
             snap_operators.append(op_spi.getOperatorAlias())
 
         return snap_operators
-    
+
+
     @staticmethod
     def describe_operators():
         """This function provides a Python dictionary with all SNAP operators. 
@@ -101,14 +101,14 @@ class Graph():
         op_spi_it = GPF.getDefaultInstance().getOperatorSpiRegistry().getOperatorSpis().iterator()
 
         while op_spi_it.hasNext():
-            
+
             op_spi = op_spi_it.next()
 
             print('{} - {}'.format(op_spi.getOperatorDescriptor().getAlias(),
                                    op_spi.getOperatorDescriptor().getDescription()))
-    
+
     def nice_view(self):
-        
+
         try:
             from pygments import highlight
             from pygments.lexers import XmlLexer
@@ -119,15 +119,15 @@ class Graph():
             def display_xml_nice(xml):
                 formatter = HtmlFormatter()
                 IPython.display.display(HTML('<style type="text/css">{}</style>    {}'.format(formatter.get_style_defs('.highlight'), highlight(xml, XmlLexer(), formatter))))
-        
+
             display_xml_nice(etree.tostring(self.root , pretty_print=True))
-            
+           
         except ModuleNotFoundError:
-            
+
             print(etree.tostring(self.root, 
                                  pretty_print=True).decode('utf-8')).replace('\\n', '\n')
-        
     
+
     def view(self):
         """This method prints SNAP Graph
     
@@ -142,10 +142,10 @@ class Graph():
         """
         print(etree.tostring(self.root, 
                              pretty_print=True).decode('utf-8'))
-             
+
     def add_node(self, operator, node_id, source=None):
         """This method adds or overwrites a node to the SNAP Graph
-    
+
         Args:
             node_id: node identifier
             operator: SNAP operator
@@ -168,11 +168,11 @@ class Graph():
             parameters_elem = self.root.xpath(xpath_expr + '/parameters')
 
             for param in [name for name in dir(operator) if name[:2] != '__' and name[-2:] != '__' and name != '_params' and type(getattr(operator, name)).__name__ in ['str', 'NoneType']]:
-                
+
                 if param == 'targetBandDescriptors':
-                                        
+
                     parameters_elem.append(etree.fromstring(getattr(operator, param)))
-                    
+
                 else:
                     p_elem = self.root.xpath(xpath_expr + '/parameters/%s' % param)[0]
 
@@ -181,7 +181,7 @@ class Graph():
                             p_elem.text = getattr(operator, param)
                         else:
                             p_elem.text.append(etree.fromstring(getattr(operator, param)))
-    
+
         else:
 
             node_elem = etree.SubElement(self.root, 'node')
@@ -198,14 +198,14 @@ class Graph():
                         source_product_elem = etree.SubElement(sources_elem, 'sourceProduct.%s' % str(index))
 
                     source_product_elem.attrib['refid'] = s
-            
+
             elif isinstance(source, dict):
 
                 for key, value in source.iteritems():
-                    
+
                     source_product_elem = etree.SubElement(sources_elem, key)
                     source_product_elem.text = value
-            
+
             elif source is not None:
                 source_product_elem = etree.SubElement(sources_elem, 'sourceProduct')
                 source_product_elem.attrib['refid'] = source
@@ -213,18 +213,17 @@ class Graph():
             parameters_elem = etree.SubElement(node_elem, 'parameters')
             parameters_elem.attrib['class'] = 'com.bc.ceres.binding.dom.XppDomElement'
 
-            #for key, value in parameters.items():
             for param in [name for name in dir(operator) if name[:2] != '__' and name[-2:] != '__' and name != '_params' and type(getattr(operator, name)).__name__ in ['str', 'NoneType']]:
 
                 if param == 'targetBandDescriptors':
-                                        
+
                     parameters_elem.append(etree.fromstring(getattr(operator, param)))
-                    
+
                 else:
-                
+
                     parameter_elem = etree.SubElement(parameters_elem, param)
 
-                    if getattr(operator, param) is not None:             
+                    if getattr(operator, param) is not None:
                         if getattr(operator, param)[0] != '<':
                             parameter_elem.text = getattr(operator, param)
                         else:
@@ -232,11 +231,11 @@ class Graph():
 
         node_elem.attrib['id'] = node_id
 
-        operator_elem.text = operator.operator 
+        operator_elem.text = operator.operator
 
     def save_graph(self, filename):
         """This method saves the SNAP Graph
-    
+
         Args:
             filename: XML filename with '.xml' extension
 
@@ -249,11 +248,10 @@ class Graph():
         with open(filename, 'w') as file:
             file.write('<?xml version="1.0" encoding="UTF-8"?>\n')
             file.write(etree.tostring(self.root, pretty_print=True).decode())
-    
-   
+
     def run(self):
         """This method runs the SNAP Graph using gpt
-    
+
         Args:
             None.
 
@@ -264,9 +262,9 @@ class Graph():
         Raises:
             None.
         """
-        
+
         def _run_command(command, **kwargs):
-    
+
             process = subprocess.Popen(args=command, stdout=subprocess.PIPE, **kwargs)
             while True:
                 output = process.stdout.readline()
@@ -275,19 +273,19 @@ class Graph():
                 if output:
                     print(output.strip().decode())
             rc = process.poll()
-            
+
             return rc
-        
+
         os.environ['LD_LIBRARY_PATH'] = '.'
-        
+
         print('Processing the graph')
-        
+
         fd, path = tempfile.mkstemp()
-        
+
         rc = None
-        
+
         try:
-        
+
             self.save_graph(filename=path)
 
             options = [self.gpt_path,
@@ -298,11 +296,12 @@ class Graph():
             rc = _run_command(options)
 
         finally:
-            
+
             os.remove(path)
-        
-        if rc != 0: 
-            
+
+        if rc != 0:
+
             raise Exception('Graph execution failed (exit code {})'.format(rc))
-            
+
         return rc
+       

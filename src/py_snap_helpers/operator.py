@@ -3,32 +3,33 @@ from types import SimpleNamespace
 from snappy import GPF, jpy
 from .operatorparams import OperatorParams
 
+
 class Operator(SimpleNamespace):
-    
+
     def __init__(self, operator, **kwargs):
-        
+
         self.operator = operator
         self._params = {**OperatorParams(self.operator).params,
                         **kwargs} #OperatorParams(self.operator).params
-        
+
         return super().__init__(**self._params)
-        
+
     def __str__(self):
-       
+
         return '{}\n{}'.format(self.operator, self._params)
-    
+
     def __repr__(self):
-        
+
         return 'Operator(\'{}\', {})'.format(self.operator, 
                                             ', '.join(['{}=\'{}\''.format(key, value) for key, value in self._params.items()]))
-    
+
     def to_dict(self):
 
         return self._params
-        
+
     def describe(self):
         """This function prints the human readable information about a SNAP operator 
-    
+
         Args:
             operator: SNAP operator
 
@@ -44,8 +45,6 @@ class Operator(SimpleNamespace):
         print('Description: {}'.format(op_spi.getOperatorDescriptor().getDescription()))
         print('Authors: {}\n'.format(op_spi.getOperatorDescriptor().getAuthors()))
         print('{}'.format(op_spi.getOperatorDescriptor().getName()))
-        
-        
         print('Version: {}\n'.format(op_spi.getOperatorDescriptor().getVersion()))
         print('Parameters:\n')
         param_Desc = op_spi.getOperatorDescriptor().getParameterDescriptors()
@@ -56,20 +55,20 @@ class Operator(SimpleNamespace):
                                                        param.getDefaultValue()))
 
             if self.operator == 'Write' and param.getName()=='formatName':
-                
+
                 print('\t\tPossible values: {}\n'.format(self._get_write_formats()))
-            
+
             elif self.operator == 'Read' and param.getName()=='formatName':
-                
+
                 print('\t\tPossible values: {}\n'.format(self._get_read_formats()))
-            
+
             else:
-            
+
                 print('\t\tPossible values: {}\n'.format(list(param.getValueSet())))
-            
-    @staticmethod        
+
+    @staticmethod
     def _get_write_formats():
-        """This function provides a human readable list of SNAP Write operator formats. 
+        """This function provides a human readable list of SNAP Write operator formats.
 
         Args:
             None.
@@ -81,22 +80,20 @@ class Operator(SimpleNamespace):
             None.
         """
         ProductIOPlugInManager = jpy.get_type('org.esa.snap.core.dataio.ProductIOPlugInManager')
-
-        ProductWriterPlugIn = jpy.get_type('org.esa.snap.core.dataio.ProductWriterPlugIn')
 
         write_plugins = ProductIOPlugInManager.getInstance().getAllWriterPlugIns()
 
         write_formats = []
-        
+
         while write_plugins.hasNext():
             plugin = write_plugins.next()
             write_formats.append(plugin.getFormatNames()[0])
-            
+
         return write_formats
-    
-    @staticmethod        
+
+    @staticmethod    
     def _get_read_formats():
-        """This function provides a human readable list of SNAP Write operator formats. 
+        """This function provides a human readable list of SNAP Write operator formats.
 
         Args:
             None.
@@ -109,14 +106,12 @@ class Operator(SimpleNamespace):
         """
         ProductIOPlugInManager = jpy.get_type('org.esa.snap.core.dataio.ProductIOPlugInManager')
 
-        ProductWriterPlugIn = jpy.get_type('org.esa.snap.core.dataio.ProductWriterPlugIn')
-
         plugins = ProductIOPlugInManager.getInstance().getAllReaderPlugIns()
 
         formats = []
-        
+
         while plugins.hasNext():
             plugin = plugins.next()
             formats.append(plugin.getFormatNames()[0])
-            
+
         return formats
