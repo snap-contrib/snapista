@@ -16,16 +16,16 @@ class Operator(SimpleNamespace):
 
     def __str__(self):
 
-        return '{}\n{}'.format(self.operator, self._params)
+        return '{}\n{}'.format(self.operator, self.to_dict())
 
     def __repr__(self):
 
         return 'Operator(\'{}\', {})'.format(self.operator, 
-                                            ', '.join(['{}=\'{}\''.format(key, value) for key, value in self._params.items()]))
+                                            ', '.join(['{}=\'{}\''.format(key, value) for key, value in self.to_dict().items()]))
 
     def to_dict(self):
 
-        return self._params
+        return dict([(name, getattr(self, name)) for name in list(self._params.keys())])
 
     def describe(self):
         """This function prints the human readable information about a SNAP operator 
