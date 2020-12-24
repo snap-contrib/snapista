@@ -1,0 +1,7 @@
+name: env_opt_calibration
+channels:
+  - terradue
+  - conda-forge
+dependencies:
+  - python=3.7
+  - snap=7.0.0
