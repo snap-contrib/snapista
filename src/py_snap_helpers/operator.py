@@ -9,7 +9,7 @@ class Operator(SimpleNamespace):
 
         self.operator = operator
         self._params = {**OperatorParams(self.operator).params,
-                        **kwargs} #OperatorParams(self.operator).params
+                        **kwargs} 
 
         return super().__init__(**self._params)
 
