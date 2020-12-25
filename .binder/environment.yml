@@ -1,4 +1,4 @@
-name: env_opt_calibration
+name: env_snap
 channels:
   - terradue
   - conda-forge
