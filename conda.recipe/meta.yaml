@@ -1,27 +1,13 @@
 package:
-  name: py_snap_helpers
+  name: sanpista
   version: "0.0.1"
 
 source:
   path: ..
 
-#  patches:
-   # List any patch files here
-   # - fix.patch
-
 build:
-  # preserve_egg_dir: True
-  entry_points:
-    # Put any entry points (scripts to be generated automatically) here. The
-    # syntax is module:function.  For example
-    #
-    # - pyinstrument = pyinstrument:main
-    #
-    # Would create an entry point called pyinstrument that calls pyinstrument.main()
 
-  # If this is a new build for the same version, increment the build
-  # number. If you do not include this key, it defaults to 0.
-  # number: 1
+  number: 1
 
 requirements:
   build:
@@ -32,13 +18,13 @@ requirements:
     - python
     - lxml
     - psutil
-    - snap=7.0.0
+    - snap=8.0.0
 
 test:
   # Python imports
   imports:
     - lxml
-    - py_snap_helpers
+    - snapista
     
   commands:
     # You can put test commands to be run here.  Use this to test that the
@@ -52,7 +38,7 @@ test:
     # Put any additional test requirements here.  For example
     - lxml
     - psutil
-    - snap=7.0.0
+    - snap=8.0.0
 
 about:
   home: http://project.terradue.com/

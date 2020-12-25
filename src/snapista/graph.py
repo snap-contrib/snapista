@@ -147,9 +147,8 @@ class Graph():
         """This method adds or overwrites a node to the SNAP Graph
 
         Args:
-            node_id: node identifier
             operator: SNAP operator
-            parameter: dictionary with the SNAP operator parameters
+            node_id: node identifier
             source: string or list of sources (previous node identifiers in the SNAP Graph)
 
         Returns

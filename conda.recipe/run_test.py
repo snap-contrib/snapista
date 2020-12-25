@@ -1,6 +1,6 @@
-from py_snap_helpers import Graph
-from py_snap_helpers import Operator
-from py_snap_helpers import OperatorParams
+from snapista import Graph
+from snapista import Operator
+from snapista import OperatorParams
 
 
 calibration = Operator('Calibration')
