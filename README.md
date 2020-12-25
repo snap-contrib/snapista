@@ -1,4 +1,4 @@
-# py-snap-helpers - A SNAP GPT Python wrapper
+# SNAPISTA - A SNAP GPT Python wrapper
 
 ## About
 
@@ -18,7 +18,11 @@ This SNAP GPT Python wrapper goal is to:
 
 ## Installation
 
-Use conda to install py_snap_helpers
+Use conda or mamba to install snapista:
+
+```console
+conda install -c terradue snapista
+```
 
 ## Getting started
 
