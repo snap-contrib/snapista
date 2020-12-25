@@ -22,4 +22,4 @@ Use conda to install py_snap_helpers
 
 ## Getting started
 
-Run the demo note on Binder: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/snap-contrib/py_snap_helpers/HEAD?urlpath=lab%2Ftree%2Fdemo.ipynb)
+Run the demo note on Binder: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/snap-contrib/snapista/HEAD?urlpath=lab%2Ftree%2Fdemo.ipynb)
