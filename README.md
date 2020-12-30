@@ -1,5 +1,7 @@
 # SNAPISTA - A SNAP GPT Python wrapper
 
+[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+
 ## About
 
 The ESA Sentinel Applications Platform, or SNAP for short, is a free and open toolbox for processing data products from numerous satellite missions such as the EU’s Copernicus Sentinel-1, Sentinel-2 and Sentinel-3, as well as ESA’s SMOS mission, and ‘Third Party Missions’. Third Party Missions describe missions for which ESA uses its multimission ground systems to acquire, process, distribute and archive data from satellites owned by other organisations than ESA.

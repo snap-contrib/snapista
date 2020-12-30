@@ -12,7 +12,8 @@ pipeline {
             steps {
                 sh '''#!/usr/bin/env bash
                 conda build --version
-                conda --version'''
+                conda --version
+                '''
             }
         }
         stage('Build') {
@@ -24,12 +25,14 @@ pipeline {
                 '''
             }
         }
-        stage('Push') {            
+        stage('Deploy') {            
             steps { 
                 withCredentials([string(credentialsId: 'terradue-conda', variable: 'ANACONDA_API_TOKEN')]) {
                 sh '''#!/usr/bin/env bash
                 export PACKAGENAME=snapista
-                anaconda upload --user Terradue /srv/conda/envs/env_conda/conda-bld/*/$PACKAGENAME-*.tar.bz2
+                label=dev
+                if [ "$GIT_BRANCH" = "master" ]; then label=main; fi
+                anaconda upload --no-progress --force --user Terradue --label $label /srv/conda/envs/env_conda/conda-bld/*/$PACKAGENAME-*.tar.bz2
                 '''}
             }
         }

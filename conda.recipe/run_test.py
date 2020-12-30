@@ -2,7 +2,6 @@ from snapista import Graph
 from snapista import Operator
 from snapista import OperatorParams
 
-
 calibration = Operator('Calibration')
 
 calibration.createBetaBand = 'true'

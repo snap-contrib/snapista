@@ -248,11 +248,11 @@ class Graph():
             file.write('<?xml version="1.0" encoding="UTF-8"?>\n')
             file.write(etree.tostring(self.root, pretty_print=True).decode())
 
-    def run(self):
+    def run(self, gpt_options=['-x', '-c', '1024M']):
         """This method runs the SNAP Graph using gpt
 
         Args:
-            None.
+            gpt_options: list of options to pass to gpt. Defaults to ['-x', '-c', '1024M']
 
         Returns
             res: gpt exit code 
@@ -288,10 +288,9 @@ class Graph():
             self.save_graph(filename=path)
 
             options = [self.gpt_path,
-               '-x',
-               '-c',
-               '1024M',
-               path]
+                       *gpt_options,
+                       path]
+
             rc = _run_command(options)
 
         finally:
