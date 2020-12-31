@@ -166,7 +166,7 @@ class Graph():
             sources_elem = self.root.xpath(xpath_expr + '/sources')[0]
             parameters_elem = self.root.xpath(xpath_expr + '/parameters')
 
-            for param in [name for name in dir(operator) if name[:2] != '__' and name[-2:] != '__' and name != '_params' and type(getattr(operator, name)).__name__ in ['str', 'NoneType']]:
+            for param in [name for name in dir(operator) if name[:2] != '__' and name[-2:] != '__' and name != '_params' and name != 'operator' and type(getattr(operator, name)).__name__ in ['str', 'NoneType']]:
 
                 if param == 'targetBandDescriptors':
 
@@ -212,7 +212,7 @@ class Graph():
             parameters_elem = etree.SubElement(node_elem, 'parameters')
             parameters_elem.attrib['class'] = 'com.bc.ceres.binding.dom.XppDomElement'
 
-            for param in [name for name in dir(operator) if name[:2] != '__' and name[-2:] != '__' and name != '_params' and type(getattr(operator, name)).__name__ in ['str', 'NoneType']]:
+            for param in [name for name in dir(operator) if name[:2] != '__' and name[-2:] != '__' and name != '_params' and name != 'operator' and type(getattr(operator, name)).__name__ in ['str', 'NoneType']]:
 
                 if param == 'targetBandDescriptors':
 
