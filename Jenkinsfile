@@ -29,6 +29,7 @@ pipeline {
             steps { 
                 withCredentials([string(credentialsId: 'terradue-conda', variable: 'ANACONDA_API_TOKEN')]) {
                 sh '''#!/usr/bin/env bash
+                set -x
                 export PACKAGENAME=snapista
                 label=main
                 if [ "$GIT_BRANCH" = "develop" ]; then label=dev; fi
