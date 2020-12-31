@@ -30,8 +30,8 @@ pipeline {
                 withCredentials([string(credentialsId: 'terradue-conda', variable: 'ANACONDA_API_TOKEN')]) {
                 sh '''#!/usr/bin/env bash
                 export PACKAGENAME=snapista
-                label=dev
-                if [ "$GIT_BRANCH" = "master" ]; then label=main; fi
+                label=main
+                if [ "$GIT_BRANCH" = "develop" ]; then label=dev; fi
                 anaconda upload --no-progress --force --user Terradue --label $label /srv/conda/envs/env_conda/conda-bld/*/$PACKAGENAME-*.tar.bz2
                 '''}
             }
