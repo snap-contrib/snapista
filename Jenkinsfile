@@ -33,7 +33,7 @@ pipeline {
                 export PACKAGENAME=snapista
                 label=main
                 if [ "$GIT_BRANCH" = "develop" ]; then label=dev; fi
-                anaconda upload --verbose --no-progress --force --user Terradue --label $label /srv/conda/envs/env_conda/conda-bld/*/$PACKAGENAME-*.tar.bz2
+                anaconda --verbose upload --no-progress --force --user Terradue --label $label /srv/conda/envs/env_conda/conda-bld/*/$PACKAGENAME-*.tar.bz2
                 '''}
             }
         }
