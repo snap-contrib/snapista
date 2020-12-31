@@ -20,7 +20,7 @@ requirements:
     - python
     - lxml
     - psutil
-    - snap=8.0.0
+    - snap >=8.0.0
 
 test:
 
@@ -33,10 +33,10 @@ test:
   requires:
     - lxml
     - psutil
-    - snap=8.0.0
+    - snap >=8.0.0
 
 about:
-  home: http://project.terradue.com/
-  license: EUPL License
-  summary: "Helpers for SNAP and Python"
+  home: https://github.com/snap-contrib/snapista
+  license: MIT
+  summary: "SNAP GPT Python wrapper"
 

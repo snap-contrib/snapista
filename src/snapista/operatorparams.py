@@ -1,7 +1,7 @@
 from snappy import GPF
 
-class OperatorParams():
 
+class OperatorParams:
     def __init__(self, operator):
 
         self.operator = operator
