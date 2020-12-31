@@ -1,13 +1,15 @@
+{% set data = load_setup_py_data() %}
+
 package:
   name: snapista
-  version: "0.0.1"
+  version: {{ data.get('version') }}
 
 source:
   path: ..
 
 build:
 
-  number: 1
+  number: 2
 
 requirements:
   build:
@@ -21,21 +23,14 @@ requirements:
     - snap=8.0.0
 
 test:
-  # Python imports
+
   imports:
     - lxml
     - snapista
     
   commands:
-    # You can put test commands to be run here.  Use this to test that the
-    # entry points work.
-    #test_cioppy.py
-
-  # You can also put a file called run_test.py in the recipe that will be run
-  # at test time.
 
   requires:
-    # Put any additional test requirements here.  For example
     - lxml
     - psutil
     - snap=8.0.0
@@ -45,6 +40,3 @@ about:
   license: EUPL License
   summary: "Helpers for SNAP and Python"
 
-# See
-# http://docs.continuum.io/conda/build.html for
-# more information about meta.yaml
