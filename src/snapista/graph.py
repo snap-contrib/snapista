@@ -177,14 +177,14 @@ class Graph:
                 and name[-2:] != "__"
                 and name != "_params"
                 and name != "operator"
-                and type(getattr(operator, name)).__name__ in ["str", "NoneType"]
+                and type(getattr(operator, name)).__name__ in ["str", "NoneType", "TargetBandDescriptors"]
             ]:
-
+                
                 if param == "targetBandDescriptors":
 
                     if isinstance(getattr(operator, param), TargetBandDescriptors):
 
-                        parameters_elem.append(getattr(operator, param.to_xml()))
+                        parameters_elem.append(getattr(operator, param).to_xml())
 
                     elif isinstance(getattr(operator, param), str):
 
@@ -240,14 +240,14 @@ class Graph:
                 and name[-2:] != "__"
                 and name != "_params"
                 and name != "operator"
-                and type(getattr(operator, name)).__name__ in ["str", "NoneType"]
+                and type(getattr(operator, name)).__name__ in ["str", "NoneType", "TargetBandDescriptors"]
             ]:
-
+         
                 if param == "targetBandDescriptors":
 
                     if isinstance(getattr(operator, param), TargetBandDescriptors):
 
-                        parameters_elem.append(getattr(operator, param.to_xml()))
+                        parameters_elem.append(getattr(operator, param).to_xml())
 
                     elif isinstance(getattr(operator, param), str):
 
