@@ -3,6 +3,7 @@ import subprocess
 import tempfile
 import lxml.etree as etree
 from snappy import GPF
+from .target_band_descriptors import TargetBandDescriptors
 
 
 class Graph:
@@ -181,7 +182,16 @@ class Graph:
 
                 if param == "targetBandDescriptors":
 
-                    parameters_elem.append(etree.fromstring(getattr(operator, param)))
+                    if isinstance(getattr(operator, param), TargetBandDescriptors):
+
+                        parameters_elem.append(getattr(operator, param.to_xml()))
+
+                    elif isinstance(getattr(operator, param), str):
+
+                        parameters_elem.append(etree.fromstring(getattr(operator, param)))
+                    else:
+                        
+                        raise ValueError()
 
                 else:
                     p_elem = self.root.xpath(xpath_expr + "/parameters/%s" % param)[0]
@@ -235,7 +245,16 @@ class Graph:
 
                 if param == "targetBandDescriptors":
 
-                    parameters_elem.append(etree.fromstring(getattr(operator, param)))
+                    if isinstance(getattr(operator, param), TargetBandDescriptors):
+
+                        parameters_elem.append(getattr(operator, param.to_xml()))
+
+                    elif isinstance(getattr(operator, param), str):
+
+                        parameters_elem.append(etree.fromstring(getattr(operator, param)))
+                    else:
+
+                        raise ValueError()
 
                 else:
 

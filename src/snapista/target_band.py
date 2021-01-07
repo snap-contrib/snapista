@@ -1,0 +1,38 @@
+import attr
+import lxml.etree as etree
+
+@attr.s
+class TargetBand(object):
+
+    name = attr.ib()
+    expression = attr.ib()
+    band_type = attr.ib('float32')
+    description = attr.ib(default=None)
+    unit = attr.ib(default=None)
+    no_data_value = attr.ib(default="NaN")
+
+
+    def __str__(self):
+
+        return self.__repr__()
+
+    def __repr__(self):
+
+        return "TargetBand({})".format(
+            ", ".join(["{}='{}'".format(key, value) for key, value in self.to_dict().items()])
+        )
+
+    def to_dict(self):
+       
+        return attr.asdict(self)
+    
+    def to_xml(self):
+        
+        root = etree.Element("targetBand")
+        
+        for key, value in self.to_dict().items():
+
+            elem = etree.SubElement(root, key)
+            elem.text = value
+            
+        return root
