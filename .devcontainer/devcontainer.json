@@ -1,0 +1,30 @@
+// See https://aka.ms/vscode-remote/containers for the
+// documentation about the devcontainer.json format
+{
+	"name": "SNAP",
+		
+	"build": {
+		"context": "..",
+		"dockerfile": "./Dockerfile"},
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/bash",
+		"python.pythonPath": "/srv/conda/envs/env_snap/bin/python",
+		"python.linting.enabled": true,
+		"python.linting.pylintEnabled": true,
+		"python.formatting.autopep8Path": "/srv/conda//bin/autopep8",
+		"python.formatting.blackPath": "/srv/conda/bin/black",
+		"python.formatting.yapfPath": "/srv/conda/bin/yapf",
+		"python.linting.banditPath": "/srv/conda/bin/bandit",
+		"python.linting.flake8Path": "/srv/conda/bin/flake8",
+		"python.linting.mypyPath": "/srv/conda/bin/mypy",
+		"python.linting.pycodestylePath": "/srv/conda/bin/pycodestyle",
+		"python.linting.pydocstylePath": "/srv/conda/bin/pydocstyle",
+		"python.linting.pylintPath": "/srv/conda/bin/pylint"},
+	"extensions": [
+		"ms-python.python"
+	],
+	"mounts": [
+		"source=${localEnv:HOME}/data,target=/data,type=bind,consistency=cached",
+		"source=${localEnv:HOME}/results,target=/results,type=bind,consistency=cached"
+	]
+}
