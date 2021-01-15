@@ -21,12 +21,14 @@ requirements:
     - lxml
     - psutil
     - snap >=8.0.0
+    - attrs
 
 test:
 
   imports:
     - lxml
     - snapista
+    - attr
     
   commands:
 
@@ -34,6 +36,7 @@ test:
     - lxml
     - psutil
     - snap >=8.0.0
+    - attrs
 
 about:
   home: https://github.com/snap-contrib/snapista

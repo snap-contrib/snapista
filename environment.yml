@@ -6,4 +6,6 @@ dependencies:
   - python
   - snap=8.0.0
   - lxml
+  - attrs
   - ipykernel
+
