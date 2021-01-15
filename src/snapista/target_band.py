@@ -6,7 +6,7 @@ class TargetBand(object):
 
     name = attr.ib()
     expression = attr.ib()
-    band_type = attr.ib('float32')
+    type = attr.ib('float32')
     description = attr.ib(default=None)
     unit = attr.ib(default=None)
     no_data_value = attr.ib(default="NaN")
