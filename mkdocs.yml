@@ -1,5 +1,10 @@
 site_name: My Docs
 
 theme:
-
   name: material
+
+
+nav:
+- Home: 'index.md'
+- Install: 'Install.md'
+- GettingStarted: 'GettingStarted.md'
