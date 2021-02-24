@@ -1,10 +1,10 @@
-site_name: My Docs
+site_name: SNAPISTA
 
 theme:
   name: material
 
 
 nav:
-- Home: 'index.md'
-- Install: 'Install.md'
-- GettingStarted: 'GettingStarted.md'
+  - Home: 'index.md'
+  - Install: 'Install.md'
+  - GettingStarted: 'GettingStarted.md'
