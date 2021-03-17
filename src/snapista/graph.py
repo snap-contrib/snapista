@@ -94,6 +94,9 @@ class Graph:
         Raises:
             None.
         """
+
+        desc_dict = {}
+        
         GPF.getDefaultInstance().getOperatorSpiRegistry().loadOperatorSpis()
 
         op_spi_it = GPF.getDefaultInstance().getOperatorSpiRegistry().getOperatorSpis().iterator()
@@ -102,11 +105,17 @@ class Graph:
 
             op_spi = op_spi_it.next()
 
+            alias = op_spi.getOperatorDescriptor().getAlias()
+            description = op_spi.getOperatorDescriptor().getDescription()
+        
+            desc_dict[alias] = description
             print(
                 "{} - {}".format(
-                    op_spi.getOperatorDescriptor().getAlias(), op_spi.getOperatorDescriptor().getDescription()
+                    alias, description
                 )
             )
+
+        return desc_dict
 
     def nice_view(self):
 
