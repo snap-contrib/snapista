@@ -4,19 +4,13 @@
 ## Import Libraries
 
 ```
-
 # Import the entire library
-
 import snapista
 
 # Import specific modules
-
 from snapista import Operator, OperatorParams
-
 from snapista import Graph
-
 from snapista import TargetBand, TargetBandDescriptors
-
 ```
 
 
@@ -25,22 +19,17 @@ from snapista import TargetBand, TargetBandDescriptors
 Based on the env: [https://github.com/snap-contrib/snapista/blob/master/environment.yml](https://github.com/snap-contrib/snapista/blob/master/environment.yml) 
 
 
-## Operator
+## Class: Operator
 
 In snapista, an operator is an individual node that embeds specific processing steps. 
 
 Visualise the list of available operators 
 
 ```
-
 from snapista import Graph
 
-Graph.list_operators()
-
-# List operators with a brief description
-
-Graph().describe_operators()
-
+Graph.list_operators() # List operators 
+Graph.describe_operators() # List with a brief description
 ```
 
 List of available Operators:
@@ -643,19 +632,15 @@ List of available Operators:
 Assign Operator, using the example of ‘Calibration’
 
 ```
-
 from snapista import Operator
 
 calibration = Operator('Calibration')
-
+calibration.describe()
 ```
 
 Visualise the parameters specific to that Operator:
 
 ```
-
-calibration.describe()
-
 Operator name: Calibration
 
 Description: Calibration of products
@@ -669,75 +654,52 @@ Version: 1.0
 Parameters:
 
 	sourceBandNames: The list of source bands.
-
 		Default Value: None
-
 		Possible values: []
 
 	auxFile: The auxiliary file
-
 		Default Value: Latest Auxiliary File
-
 		Possible values: ['Latest Auxiliary File', 'Product Auxiliary File', 'External Auxiliary File']
 
 	externalAuxFile: The antenna elevation pattern gain auxiliary data file.
-
 		Default Value: None
-
 		Possible values: []
 
 	outputImageInComplex: Output image in complex
-
 		Default Value: false
-
 		Possible values: []
 
 	outputImageScaleInDb: Output image scale
-
 		Default Value: false
-
 		Possible values: []
 
 	createGammaBand: Create gamma0 virtual band
-
 		Default Value: false
-
 		Possible values: []
 
 	createBetaBand: Create beta0 virtual band
-
 		Default Value: false
-
 		Possible values: []
 
 	selectedPolarisations: The list of polarisations
-
 		Default Value: None
-
 		Possible values: []
 
 	outputSigmaBand: Output sigma0 band
-
 		Default Value: true
-
 		Possible values: []
 
 	outputGammaBand: Output gamma0 band
-
 		Default Value: false
-
 		Possible values: []
 
 	outputBetaBand: Output beta0 band
-
 		Default Value: false
-
 		Possible values: []
-
 ```
 
 
-## Graph
+## Class: Graph
 
 The SNAP architecture provides a flexible Graph Processing Framework (GPF) allowing the user to create processing graphs for batch processing and customized processing chains ([http://step.esa.int/docs/tutorials/SNAP_CommandLine_Tutorial.pdf](http://step.esa.int/docs/tutorials/SNAP_CommandLine_Tutorial.pdf)).
 
@@ -757,7 +719,6 @@ The main functions available for the Graph class are:
 Create a Graph and add two nodes
 
 ```
-
 # Create a Graph
 
 from snapista import Graph
@@ -767,7 +728,6 @@ g = Graph()
 # Add two nodes
 
 g.add_node(operator=Operator('Read'), 
-
            node_id='read_1')
 
 calibration = Operator('Calibration')
@@ -775,420 +735,67 @@ calibration = Operator('Calibration')
 calibration.createBetaBand = 'false'
 
 g.add_node(operator=calibration, 
-
            node_id='calibration', 
-
            source='read_1')
-
 ```
 
 Visualise the status of the Graph
 
 ```
-
 # Visualise the Graph
-
 g.view()
 
 &lt;graph>
-
   &lt;version>1.0&lt;/version>
-
   &lt;node id="read_1">
-
     &lt;operator>Read&lt;/operator>
-
     &lt;sources/>
-
     &lt;parameters class="com.bc.ceres.binding.dom.XppDomElement">
-
       &lt;bandNames/>
-
       &lt;copyMetadata>true&lt;/copyMetadata>
-
       &lt;file/>
-
       &lt;formatName/>
-
       &lt;geometryRegion/>
-
       &lt;maskNames/>
-
       &lt;pixelRegion/>
-
     &lt;/parameters>
-
   &lt;/node>
-
   &lt;node id="calibration">
-
     &lt;operator>Calibration&lt;/operator>
-
     &lt;sources>
-
       &lt;sourceProduct refid="read_1"/>
-
     &lt;/sources>
-
     &lt;parameters class="com.bc.ceres.binding.dom.XppDomElement">
-
       &lt;auxFile>Latest Auxiliary File&lt;/auxFile>
-
       &lt;createBetaBand>false&lt;/createBetaBand>
-
       &lt;createGammaBand>false&lt;/createGammaBand>
-
       &lt;externalAuxFile/>
-
       &lt;outputBetaBand>false&lt;/outputBetaBand>
-
       &lt;outputGammaBand>false&lt;/outputGammaBand>
-
       &lt;outputImageInComplex>false&lt;/outputImageInComplex>
-
       &lt;outputImageScaleInDb>false&lt;/outputImageScaleInDb>
-
       &lt;outputSigmaBand>true&lt;/outputSigmaBand>
-
       &lt;selectedPolarisations/>
-
       &lt;sourceBandNames/>
-
     &lt;/parameters>
-
   &lt;/node>
-
 &lt;/graph>
 
 # Print also the path and working directory 
-
 print(g)
-
 ```
 
 
-## TargetBand
+## Class: TargetBand
 
 The TargetBand class allows to define an object that can be used in the Operators. The following attributes are defined in a TargetBand Object: 
 
 ```
-
 name = attr.ib()
-
 expression = attr.ib()
-
 type = attr.ib('float32')
-
 description = attr.ib(default=None)
-
 unit = attr.ib(default=None)
-
 no_data_value = attr.ib(default="NaN")
-
 ```
 
-
-## Examples
-
-
-### Example 1: Operator BandMaths
-
-```
-
-band_maths = Operator('BandMaths')
-
-band_maths.describe()
-
-```
-
-```
-
-Operator name: BandMaths
-
-Description: Create a product with one or more bands using mathematical expressions.
-
-Authors: Marco Zuehlke, Norman Fomferra, Marco Peters
-
-org.esa.snap.core.gpf.common.BandMathsOp
-
-Version: 1.1
-
-Parameters:
-
-	targetBandDescriptors: List of descriptors defining the target bands.
-
-		Default Value: None
-
-		Possible values: []
-
-	variables: List of variables which can be used within the expressions.
-
-		Default Value: None
-
-		Possible values: []
-
-active_fire_detected float32 S9_BT_in &lt; 265 ? 0 : F1_BT_in > 315 and (F1_BT_in - F2_BT_in) > 15 ? 1 : 0 NaN
-
-```
-
-```
-
-active_fire_band = TargetBand(name='active_fire_detected',
-
-                              expression='S9_BT_in &lt; 265 ? 0 : F1_BT_in &gt; 315 and (F1_BT_in - F2_BT_in) &gt; 15 ? 1 : 0')
-
-active_fire_band
-
-```
-
-```
-
-TargetBand(name='active_fire_detected', expression='S9_BT_in &lt; 265 ? 0 : F1_BT_in &gt; 315 and (F1_BT_in - F2_BT_in) &gt; 15 ? 1 : 0', type='float32', description=None, unit=None, no_data_value='NaN')
-
-```
-
-```
-
-band_maths.targetBandDescriptors = TargetBandDescriptors([active_fire_band])
-
-band_maths.targetBandDescriptors
-
-&lt;snapista.target_band_descriptors.TargetBandDescriptors at 0x7f6a71568850>
-
-```
-
-
-### Example 2: Operator Subset
-
-```
-
-subset = Operator('Subset')
-
-subset.describe()
-
-```
-
-```
-
-Operator name: Subset
-
-Description: Create a spatial and/or spectral subset of a data product.
-
-Authors: Marco Zuehlke, Norman Fomferra, Marco Peters
-
-org.esa.snap.core.gpf.common.SubsetOp
-
-Version: 1.2
-
-Parameters:
-
-	bandNames: The list of source bands.
-
-		Default Value: None
-
-		Possible values: []
-
-	region: The subset region in pixel coordinates.
-
-Use the following format: &lt;x>,&lt;y>,&lt;width>,&lt;height>
-
-If not given, the entire scene is used. The 'geoRegion' parameter has precedence over this parameter.
-
-		Default Value: None
-
-		Possible values: []
-
-	referenceBand: The band used to indicate the pixel coordinates.
-
-		Default Value: None
-
-		Possible values: []
-
-	geoRegion: The subset region in geographical coordinates using WKT-format,
-
-e.g. POLYGON((&lt;lon1> &lt;lat1>, &lt;lon2> &lt;lat2>, ..., &lt;lon1> &lt;lat1>))
-
-(make sure to quote the option due to spaces in &lt;geometry>).
-
-If not given, the entire scene is used.
-
-		Default Value: None
-
-		Possible values: []
-
-	subSamplingX: The pixel sub-sampling step in X (horizontal image direction)
-
-		Default Value: 1
-
-		Possible values: []
-
-	subSamplingY: The pixel sub-sampling step in Y (vertical image direction)
-
-		Default Value: 1
-
-		Possible values: []
-
-	fullSwath: Forces the operator to extend the subset region to the full swath.
-
-		Default Value: false
-
-		Possible values: []
-
-	tiePointGridNames: The comma-separated list of names of tie-point grids to be copied. 
-
-If not given, all bands are copied.
-
-		Default Value: None
-
-		Possible values: []
-
-	copyMetadata: Whether to copy the metadata of the source product.
-
-		Default Value: false
-
-		Possible values: []
-
-```
-
-```
-
-subset.geoRegion = 'POLYGON((12.76 41.73,12.84 41.73,12.84 41.68,12.76 41.68,12.76 41.73))'
-
-subset
-
-```
-
-```
-
-Operator('Subset', bandNames='None', region='None', referenceBand='None', geoRegion='POLYGON((12.76 41.73,12.84 41.73,12.84 41.68,12.76 41.68,12.76 41.73))', subSamplingX='1', subSamplingY='1', fullSwath='false', tiePointGridNames='None', copyMetadata='false')
-
-```
-
-
-### Example 3: Create a linear Graph
-
-```
-
-g = Graph() 
-
-read = Operator('Read')
-
-read.formatName = 'SENTINEL-1'
-
-read.file = 'some1'
-
-operators = [read,
-
-             'Resample',
-
-             'Reproject',
-
-             'Subset',
-
-             'AddLandCover',
-
-             'Write']
-
-for index, operator in enumerate(operators):
-
-    
-
-    print('Adding Operator {} to graph'.format(operator.operator if isinstance(operator, Operator) else operator))
-
-    if index == 0:            
-
-        source_node_id = ''
-
-    else:
-
-        source_node_id = operators[index - 1].operator if isinstance(operators[index - 1], Operator) else operators[index - 1]
-
-        
-
-        
-
-    g.add_node(operator if isinstance(operator, Operator) else Operator(operator),
-
-               operator.operator if isinstance(operator, Operator) else operator,
-
-               source_node_id)
-
-g.view()
-
-```
-
-```
-
-&lt;graph>
-
-  &lt;version>1.0&lt;/version>
-
-  &lt;node id="read_1">
-
-    &lt;operator>Read&lt;/operator>
-
-    &lt;sources/>
-
-    &lt;parameters class="com.bc.ceres.binding.dom.XppDomElement">
-
-      &lt;bandNames/>
-
-      &lt;copyMetadata>true&lt;/copyMetadata>
-
-      &lt;file/>
-
-      &lt;formatName/>
-
-      &lt;geometryRegion/>
-
-      &lt;maskNames/>
-
-      &lt;pixelRegion/>
-
-    &lt;/parameters>
-
-  &lt;/node>
-
-  &lt;node id="band_maths">
-
-    &lt;operator>BandMaths&lt;/operator>
-
-    &lt;sources>
-
-      &lt;sourceProduct refid="read_1"/>
-
-    &lt;/sources>
-
-    &lt;parameters class="com.bc.ceres.binding.dom.XppDomElement">
-
-      &lt;targetBands>
-
-        &lt;targetBand>
-
-          &lt;name>active_fire_detected&lt;/name>
-
-          &lt;expression>S9_BT_in &amp;lt; 265 ? 0 : F1_BT_in &amp;gt; 315 and (F1_BT_in - F2_BT_in) &amp;gt; 15 ? 1 : 0&lt;/expression>
-
-          &lt;type>float32&lt;/type>
-
-          &lt;description/>
-
-          &lt;unit/>
-
-          &lt;no_data_value>NaN&lt;/no_data_value>
-
-        &lt;/targetBand>
-
-      &lt;/targetBands>
-
-      &lt;variables/>
-
-    &lt;/parameters>
-
-  &lt;/node>
-
-&lt;/graph>
-
-```
-
-An interactive notebook developed in Binder with some example code is available here: [https://mybinder.org/v2/gh/snap-contrib/snapista/HEAD?urlpath=lab%2Ftree%2Fdemo.ipynb](https://mybinder.org/v2/gh/snap-contrib/snapista/HEAD?urlpath=lab%2Ftree%2Fdemo.ipynb) 

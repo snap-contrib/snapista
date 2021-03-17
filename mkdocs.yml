@@ -5,6 +5,7 @@ theme:
 
 
 nav:
-  - Home: 'index.md'
+  - Introduction: 'index.md'
   - Install: 'Install.md'
   - GettingStarted: 'GettingStarted.md'
+  - Examples: 'Examples.md'
