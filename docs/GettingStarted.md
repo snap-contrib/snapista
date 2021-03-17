@@ -14,11 +14,6 @@ from snapista import TargetBand, TargetBandDescriptors
 ```
 
 
-## Dependences
-
-Based on the env: [https://github.com/snap-contrib/snapista/blob/master/environment.yml](https://github.com/snap-contrib/snapista/blob/master/environment.yml) 
-
-
 ## Class: Operator
 
 In snapista, an operator is an individual node that embeds specific processing steps. 
