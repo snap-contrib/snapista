@@ -16,6 +16,6 @@ A few documents and links of interest are:
 
 *   The [installation guide](installation/). 
 *   A [getting started](../gettingstarted/) section with an introduction to snapista including some examples .
-*   An [interactive notebook developed for Binder](https://mybinder.org/v2/gh/snap-contrib/snapista/HEAD?urlpath=lab%2Ftree%2Fdemo.ipynb with a few code snippets  
+*   An [interactive notebook developed for Binder](https://mybinder.org/v2/gh/snap-contrib/snapista/HEAD?urlpath=lab%2Ftree%2Fdemo.ipynb) with a few code snippets  
 *   The [snapista software repository](https://github.com/snap-contrib/snapista)  
 
