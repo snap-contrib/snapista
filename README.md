@@ -29,3 +29,7 @@ conda install -c terradue snapista
 ## Getting started
 
 Run the demo note on Binder: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/snap-contrib/snapista/HEAD?urlpath=lab%2Ftree%2Fdemo.ipynb)
+
+## Documentation
+
+The documentation is available at: https://snap-contrib.github.io/snapista/
