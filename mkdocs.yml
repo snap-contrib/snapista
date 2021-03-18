@@ -8,8 +8,13 @@ markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
 
+plugins:
+  - mkdocs-jupyter
+
 nav:
   - Introduction: 'index.md'
   - Installation: 'installation.md'
   - Getting started: 'gettingstarted.md'
-  - Examples: 'examples.md'
+  - Examples: 
+    - SAR calibration: examples/sar-calibration.ipynb
+  - demo: demo.ipynb

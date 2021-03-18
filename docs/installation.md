@@ -10,4 +10,4 @@ On a terminal, run:
 
 From your Python script/notebook, you can now import snapista and use its modules. 
 
-Refer to the [getting started](gettingstarted/) documentation for more information.
+Refer to the [getting started](../gettingstarted/) documentation for more information.

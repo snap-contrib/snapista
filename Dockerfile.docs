@@ -1,0 +1,12 @@
+FROM squidfunk/mkdocs-material
+
+RUN pip install mkdocs-mermaid2-plugin
+
+RUN apk add gcc g++
+
+RUN apk add --no-cache build-base libffi-dev openssl-dev curl krb5-dev linux-headers zeromq-dev
+
+RUN pip install mkdocs-jupyter
+
+# docker build -f Dockerfile.docs -t docs-dev .
+# docker run --rm -it -p 8000:8000 -v ${PWD}:/docs docs-dev:latest 
