@@ -6,9 +6,7 @@ SNAP is distributed together with a Python language interface called snappy, how
 
 The community has replied to this by creating numerous wrappers around the SNAP execution engine (GPT) command.
 
-This documentation refers to another SNAP GPT Python wrapper called snapista. The goal of snapista is to:
-
-
+This documentation refers to yet another SNAP GPT Python wrapper called _snapista_. The goal of _snapista_ is to:
 
 *   ease the programmatic generation of SNAP GPT graphs in a Pythonic way
 *   provide access to all operators of all existing toolboxes
@@ -16,10 +14,8 @@ This documentation refers to another SNAP GPT Python wrapper called snapista. Th
 
 A few documents and links of interest are:
 
-
-
-*   The installation guide is in the Install.md document. 
-*   An introduction to snapista with some examples are described in the GettingStarted.md document.
-*   An interactive notebook developed in Binder with some example code is available here: [https://mybinder.org/v2/gh/snap-contrib/snapista/HEAD?urlpath=lab%2Ftree%2Fdemo.ipynb](https://mybinder.org/v2/gh/snap-contrib/snapista/HEAD?urlpath=lab%2Ftree%2Fdemo.ipynb) 
-*   The snapista repository is saved here: [https://github.com/snap-contrib/snapista](https://github.com/snap-contrib/snapista)  
+*   The [installation guide](installation/). 
+*   A [getting started](gettingstarted/) section with an introduction to snapista including some examples .
+*   An [interactive notebook developed for Binder](https://mybinder.org/v2/gh/snap-contrib/snapista/HEAD?urlpath=lab%2Ftree%2Fdemo.ipynb with a few code snippets  
+*   The [snapista software repository](https://github.com/snap-contrib/snapista)  
 
