@@ -16,5 +16,7 @@ nav:
   - Installation: 'installation.md'
   - Getting started: 'gettingstarted.md'
   - Examples: 
+    - Operator: examples/operator.ipynb
+    - Graph: examples/graph.ipynb
+    - BandMaths: examples/bandmaths.ipynb
     - SAR calibration: examples/sar-calibration.ipynb
-  - demo: demo.ipynb
