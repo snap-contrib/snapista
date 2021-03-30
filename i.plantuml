@@ -1,0 +1,141 @@
+@startuml pippo
+
+class DataPipeline {
+    stac_version
+    stac_extensions
+    ..
+    type
+    id
+    title
+    description
+    summaries
+}
+
+class Collection {
+    stac_version
+    stac_extensions
+    ..
+    id
+    title
+    description
+}
+
+note left of Collection
+  There are four Collections:
+   - queue with DataProcessingItem that are waiting to be processed
+   - in with DataProcessingItem that are being processed
+   - out with DataProcessingItem that were successfully processed
+   - err with DataProcessingItem that were not successfully processed
+end note
+
+class DataProcessingItem {
+
+    id
+    title
+    description
+    ..
+    collection
+
+}
+
+together {
+class AssetApplicationPackage {
+    href
+    title
+    description
+    type
+    roles=["application-package"]
+}
+
+class AssetParameters {
+    href
+    title
+    description
+    type
+    roles=["parameters"]
+}
+
+class AssetStatus {
+    href
+    title
+    description
+    type
+    roles=["processing-status"]
+}
+note bottom of AssetStatus
+    The AssetStatus is mandatory
+    for DataProcessingItem that 
+    are being processed
+endnote
+
+}
+
+together {
+class Extent {
+
+}
+
+class SpatialExtent {
+    bbox
+}
+
+class TemporalExtent {
+    interval
+}
+}
+
+class Catalog {
+
+    stac_version
+    stac_extensions
+    ..
+    id
+    title
+    description
+
+}
+
+note left of Catalog
+    The DataProcessingItem has 
+    a Catalog when it has been
+    successfully processed 
+endnote
+
+class Item {
+
+    stac_version
+    stac_extensions
+    ..
+    id
+    title
+    description
+}
+
+Extent *-- SpatialExtent : 1
+Extent *-- TemporalExtent : 1
+
+DataPipeline *-- "Collection" : "link:rel=child" "1"
+
+Collection *-- DataProcessingItem : "link:rel=child" "0..*"
+
+DataProcessingItem *-- AssetApplicationPackage : 1
+
+DataProcessingItem *-- AssetParameters : 1 
+
+DataProcessingItem *-- AssetStatus : 1
+
+DataProcessingItem *-- Extent : 1
+
+DataPipeline --> DataPipeline: "link:rel=self\nlink:rel=root" 
+
+Collection --> Collection: "link:rel=self\nlink:rel=root\nlink:rel=parent" 
+
+DataProcessingItem --> Collection: "link:rel=collection"
+
+DataProcessingItem --> DataProcessingItem: "link:rel=self\nlink:rel=root\nlink:rel=parent"
+
+DataProcessingItem --> Catalog: 1 "link:rel=child"
+
+Catalog *-- Item: "link:rel=item" "(1..*)"
+
+@enduml
