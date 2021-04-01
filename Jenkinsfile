@@ -19,7 +19,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''#!/usr/bin/env bash
-                mkdir -p /home/jovyan/conda-bld/work
+                #mkdir -p /home/jovyan/conda-bld/work
                 cd $WORKSPACE
                 mamba build .
                 '''
