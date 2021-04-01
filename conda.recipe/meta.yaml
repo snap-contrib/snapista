@@ -22,6 +22,7 @@ requirements:
     - psutil
     - snap >=8.0.0
     - attrs
+    - requests
 
 test:
 
@@ -37,6 +38,7 @@ test:
     - psutil
     - snap >=8.0.0
     - attrs
+    - requests
 
 about:
   home: https://github.com/snap-contrib/snapista
