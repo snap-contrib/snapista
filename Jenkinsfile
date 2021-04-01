@@ -5,7 +5,7 @@ environment {
 
 pipeline {
     agent {
-        docker { image 'conda-build:latest' }
+        docker { image 'docker.terradue.com/conda-build:latest' }
     }
     stages {
         stage('Test') {
