@@ -21,7 +21,7 @@ pipeline {
                 sh '''#!/usr/bin/env bash
                 mkdir -p /home/jovyan/conda-bld/work
                 cd $WORKSPACE
-                mamba build .
+                mamba build --no-locking .
                 '''
             }
         }
