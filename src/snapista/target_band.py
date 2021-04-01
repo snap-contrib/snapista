@@ -1,5 +1,6 @@
 import attr
 import lxml.etree as etree
+import html
 
 @attr.s
 class TargetBand(object):
@@ -33,6 +34,10 @@ class TargetBand(object):
         for key, value in self.to_dict().items():
 
             elem = etree.SubElement(root, key)
-            elem.text = value
+
+            if key == 'expression':
+                elem.text = html.escape(value)
+            else:
+                elem.text = value
             
         return root

@@ -5,7 +5,6 @@ import lxml.etree as etree
 from snappy import GPF
 from .target_band_descriptors import TargetBandDescriptors
 
-
 class Graph:
     """SNAP Graph class
 
@@ -15,11 +14,17 @@ class Graph:
         None.
     """
 
-    def __init__(self, wdir="."):
-        self.root = etree.Element("graph")
+    def __init__(self, wdir=".", root=None):
+        
+        if root is None: 
+            self.root = etree.Element("graph")
 
-        version = etree.SubElement(self.root, "version")
-        version.text = "1.0"
+            version = etree.SubElement(self.root, "version")
+            version.text = "1.0"
+        
+        else:
+            self.root = root
+
         self.pid = None
         self.p = None
         self.wdir = wdir

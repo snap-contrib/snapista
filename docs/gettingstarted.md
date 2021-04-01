@@ -229,6 +229,33 @@ This will print:
 </graph>
 ```
 
+### Load an existing graph
+
+snapista can create a `Graph` object from an  existing graph XML file (either local or on HTTP).
+
+Example:
+
+```python
+
+from snapista import * 
+
+g = read_file("https://gist.githubusercontent.com/fabricebrito/fe7df152e9f0df3a3ff6d3974b87e9e2/raw/294b5d8fec9b2b1d4fdc7468611c9bb7756f9e7a/graph.xml")
+
+g.view()
+
+g.add_node(
+        operator=Operator(
+            "Read",
+            formatName="DIMAP",
+            file='a file',
+        ),
+        node_id="read",
+    )
+
+g.view()
+```
+
+
 ## Using BandMath
 
 In _snapista_, the SNAP BandMath module requires a sligthly different approach as the developer needs to create `TargetBand` and then create the `BandMath` node.
@@ -273,7 +300,7 @@ Then create a `TargetBand` with:
 
 ```python
 active_fire_band = TargetBand(name='active_fire_detected',
-                              expression='S9_BT_in &lt; 265 ? 0 : F1_BT_in &gt; 315 and (F1_BT_in - F2_BT_in) &gt; 15 ? 1 : 0')
+                              expression='S9_BT_in > 265 ? 0 : F1_BT_in > 315 and (F1_BT_in - F2_BT_in) > 15 ? 1 : 0')
 ```
 
 Finally associate the `TargetBand` instance to the `BandMaths` operator as a `List` with:
