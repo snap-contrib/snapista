@@ -5,7 +5,7 @@ environment {
 
 pipeline {
     agent {
-        docker { image 'conda-build:latest' }
+        docker { image 'docker.terradue.com/conda-build:latest' }
     }
     stages {
         stage('Test') {
@@ -19,9 +19,9 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''#!/usr/bin/env bash
-                mkdir -p /home/jovyan/conda-bld/work
+                #mkdir -p /home/jovyan/conda-bld/work
                 cd $WORKSPACE
-                mamba build .
+                mamba build --no-locking .
                 '''
             }
         }
