@@ -1,0 +1,14 @@
+name: dev
+channels:
+  - conda-forge
+dependencies:
+  - mamba
+  - pylint
+  - black
+  - autopep8
+  - yapf
+  - flake8
+  - mypy
+  - bandit
+  - pycodestyle
+  - pydocstyle
