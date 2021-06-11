@@ -19,4 +19,5 @@ nav:
     - Operator: examples/operator.ipynb
     - Graph: examples/graph.ipynb
     - BandMaths: examples/bandmaths.ipynb
+    - Binning: examples/binning.ipynb
     - SAR calibration: examples/sar-calibration.ipynb
