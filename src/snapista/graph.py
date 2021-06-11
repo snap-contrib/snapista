@@ -387,13 +387,16 @@ class Graph:
 
         def _run_command(command, **kwargs):
 
-            process = subprocess.Popen(args=command, stdout=subprocess.PIPE, **kwargs)
+            process = subprocess.Popen(args=command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,  **kwargs)
             while True:
                 output = process.stdout.readline()
+                err = process.stderr.readline()
                 if output.decode() == "" and process.poll() is not None:
                     break
                 if output:
                     print(output.strip().decode())
+                if err:
+                    print(err.strip().decode())
             rc = process.poll()
 
             return rc
