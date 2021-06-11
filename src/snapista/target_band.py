@@ -1,6 +1,7 @@
 import attr
 import lxml.etree as etree
-import html
+from xml.sax.saxutils import escape
+
 
 @attr.s
 class TargetBand(object):
@@ -36,7 +37,7 @@ class TargetBand(object):
             elem = etree.SubElement(root, key)
 
             if key == 'expression':
-                elem.text = html.escape(value)
+                elem.text = escape(value)
             else:
                 elem.text = value
             

@@ -3,7 +3,7 @@ import subprocess
 import tempfile
 import lxml.etree as etree
 from snappy import GPF
-
+from xml.sax.saxutils import unescape
 from snapista.binning.output_bands import BinningOutputBands
 from .target_band_descriptors import TargetBandDescriptors
 from .binning import Aggregators
@@ -175,7 +175,7 @@ class Graph:
         Raises:
             None.
         """
-        print(etree.tostring(self.root, pretty_print=True).decode("utf-8"))
+        print(unescape(etree.tostring(self.root, pretty_print=True).decode("utf-8")))
 
     def add_node(self, operator, node_id, source=None):
         """This method adds or overwrites a node to the SNAP Graph
@@ -217,7 +217,7 @@ class Graph:
                     "BinningVariables",
                 ]
             ]:
-
+              
                 if param in [
                     "targetBandDescriptors",
                     "aggregatorConfigs",
@@ -247,15 +247,18 @@ class Graph:
                         raise ValueError()
 
                 else:
-                    p_elem = self.root.xpath(xpath_expr + "/parameters/%s" % param)[0]
+                    try: 
+                        p_elem = self.root.xpath(xpath_expr + "/parameters/%s" % param)[0]
 
-                    if getattr(operator, param) is not None:
-                        if getattr(operator, param)[0] != "<":
-                            p_elem.text = getattr(operator, param)
-                        else:
-                            p_elem.text.append(
-                                etree.fromstring(getattr(operator, param))
-                            )
+                        if getattr(operator, param) is not None:
+                            if getattr(operator, param)[0] != "<":
+                                p_elem.text = getattr(operator, param)
+                            else:
+                                p_elem.text.append(
+                                    etree.fromstring(getattr(operator, param))
+                                )
+                    except IndexError:
+                        pass
 
         else:
 
@@ -367,9 +370,10 @@ class Graph:
         Raises:
             None.
         """
+        
         with open(filename, "w") as file:
             file.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-            file.write(etree.tostring(self.root, pretty_print=True).decode())
+            file.write(unescape(etree.tostring(self.root, pretty_print=True).decode()))
 
     def run(self, gpt_options=["-x", "-c", "1024M"]):
         """This method runs the SNAP Graph using gpt
