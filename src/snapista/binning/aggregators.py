@@ -3,6 +3,8 @@ from .aggregator_avg import AggregatorAvg
 from .aggregator_minmax import AggregatorMinMax
 from .aggregator_on_max_set import AggregatorOnMaxSet
 from .aggregator_percentile import AggregatorPercentile
+from .aggregator_avg_outlier import AggregatorAvgOutlier
+from .aggregator_sum import AggregatorSum
 
 
 class Aggregators(object):
