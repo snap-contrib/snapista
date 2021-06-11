@@ -3,7 +3,12 @@ import subprocess
 import tempfile
 import lxml.etree as etree
 from snappy import GPF
+
+from snapista.binning.output_bands import BinningOutputBands
 from .target_band_descriptors import TargetBandDescriptors
+from .binning import Aggregators
+from .binning import BinningVariables
+
 
 class Graph:
     """SNAP Graph class
@@ -15,13 +20,13 @@ class Graph:
     """
 
     def __init__(self, wdir=".", root=None):
-        
-        if root is None: 
+
+        if root is None:
             self.root = etree.Element("graph")
 
             version = etree.SubElement(self.root, "version")
             version.text = "1.0"
-        
+
         else:
             self.root = root
 
@@ -37,7 +42,9 @@ class Graph:
     def __str__(self):
 
         return "gpt binary: {}\nworking dir: {}\n\n{}".format(
-            self.gpt_path, self.wdir, etree.tostring(self.root, pretty_print=True).decode("utf-8")
+            self.gpt_path,
+            self.wdir,
+            etree.tostring(self.root, pretty_print=True).decode("utf-8"),
         ).replace("\\n", "\n")
 
     def __repr__(self):
@@ -74,7 +81,12 @@ class Graph:
         """
         GPF.getDefaultInstance().getOperatorSpiRegistry().loadOperatorSpis()
 
-        op_spi_it = GPF.getDefaultInstance().getOperatorSpiRegistry().getOperatorSpis().iterator()
+        op_spi_it = (
+            GPF.getDefaultInstance()
+            .getOperatorSpiRegistry()
+            .getOperatorSpis()
+            .iterator()
+        )
 
         snap_operators = []
 
@@ -101,10 +113,15 @@ class Graph:
         """
 
         desc_dict = {}
-        
+
         GPF.getDefaultInstance().getOperatorSpiRegistry().loadOperatorSpis()
 
-        op_spi_it = GPF.getDefaultInstance().getOperatorSpiRegistry().getOperatorSpis().iterator()
+        op_spi_it = (
+            GPF.getDefaultInstance()
+            .getOperatorSpiRegistry()
+            .getOperatorSpis()
+            .iterator()
+        )
 
         while op_spi_it.hasNext():
 
@@ -112,13 +129,9 @@ class Graph:
 
             alias = op_spi.getOperatorDescriptor().getAlias()
             description = op_spi.getOperatorDescriptor().getDescription()
-        
+
             desc_dict[alias] = description
-            print(
-                "{} - {}".format(
-                    alias, description
-                )
-            )
+            print("{} - {}".format(alias, description))
 
         return desc_dict
 
@@ -136,7 +149,8 @@ class Graph:
                 IPython.display.display(
                     HTML(
                         '<style type="text/css">{}</style>    {}'.format(
-                            formatter.get_style_defs(".highlight"), highlight(xml, XmlLexer(), formatter)
+                            formatter.get_style_defs(".highlight"),
+                            highlight(xml, XmlLexer(), formatter),
                         )
                     )
                 )
@@ -145,7 +159,9 @@ class Graph:
 
         except ModuleNotFoundError:
 
-            print(etree.tostring(self.root, pretty_print=True).decode("utf-8")).replace("\\n", "\n")
+            print(etree.tostring(self.root, pretty_print=True).decode("utf-8")).replace(
+                "\\n", "\n"
+            )
 
     def view(self):
         """This method prints SNAP Graph
@@ -191,20 +207,43 @@ class Graph:
                 and name[-2:] != "__"
                 and name != "_params"
                 and name != "operator"
-                and type(getattr(operator, name)).__name__ in ["str", "NoneType", "TargetBandDescriptors"]
+                and type(getattr(operator, name)).__name__
+                in [
+                    "str",
+                    "NoneType",
+                    "TargetBandDescriptors",
+                    "Aggregators",
+                    "BinningOutputBands",
+                    "BinningVariables",
+                ]
             ]:
-                
-                if param == "targetBandDescriptors":
 
-                    if isinstance(getattr(operator, param), TargetBandDescriptors):
+                if param in [
+                    "targetBandDescriptors",
+                    "aggregatorConfigs",
+                    "variableConfigs",
+                    "bandConfigurations",
+                    "postProcessorConfig",
+                    "productCustomizerConfig",
+                ]:
+                  
+                    if (param in ["bandConfigurations", "variableConfigs", "postProcessorConfig", "productCustomizerConfig" ] and not getattr(operator, param)): continue
 
+                    if (
+                        isinstance(getattr(operator, param), TargetBandDescriptors)
+                        or isinstance(getattr(operator, param), Aggregators)
+                        or isinstance(getattr(operator, param), BinningOutputBands)
+                        or isinstance(getattr(operator, param), BinningVariables)
+                    ):
                         parameters_elem.append(getattr(operator, param).to_xml())
 
                     elif isinstance(getattr(operator, param), str):
 
-                        parameters_elem.append(etree.fromstring(getattr(operator, param)))
+                        parameters_elem.append(
+                            etree.fromstring(getattr(operator, param))
+                        )
                     else:
-                        
+
                         raise ValueError()
 
                 else:
@@ -214,7 +253,9 @@ class Graph:
                         if getattr(operator, param)[0] != "<":
                             p_elem.text = getattr(operator, param)
                         else:
-                            p_elem.text.append(etree.fromstring(getattr(operator, param)))
+                            p_elem.text.append(
+                                etree.fromstring(getattr(operator, param))
+                            )
 
         else:
 
@@ -226,10 +267,14 @@ class Graph:
 
                 for index, s in enumerate(source):
                     if index == 0:
-                        source_product_elem = etree.SubElement(sources_elem, "sourceProduct")
+                        source_product_elem = etree.SubElement(
+                            sources_elem, "sourceProduct"
+                        )
 
                     else:
-                        source_product_elem = etree.SubElement(sources_elem, "sourceProduct.%s" % str(index))
+                        source_product_elem = etree.SubElement(
+                            sources_elem, "sourceProduct.%s" % str(index)
+                        )
 
                     source_product_elem.attrib["refid"] = s
 
@@ -254,18 +299,42 @@ class Graph:
                 and name[-2:] != "__"
                 and name != "_params"
                 and name != "operator"
-                and type(getattr(operator, name)).__name__ in ["str", "NoneType", "TargetBandDescriptors"]
+                and type(getattr(operator, name)).__name__
+                in [
+                    "str",
+                    "NoneType",
+                    "TargetBandDescriptors",
+                    "Aggregators",
+                    "BinningOutputBands",
+                    "BinningVariables",
+                ]
             ]:
-         
-                if param == "targetBandDescriptors":
 
-                    if isinstance(getattr(operator, param), TargetBandDescriptors):
+                if param in [
+                    "targetBandDescriptors",
+                    "aggregatorConfigs",
+                    "variableConfigs",
+                    "bandConfigurations",
+                    "postProcessorConfig",
+                    "productCustomizerConfig",
+                ]:
+                    print(param, getattr(operator, param))
+                    if (param in ["bandConfigurations", "variableConfigs", "postProcessorConfig", "productCustomizerConfig" ] and not getattr(operator, param)): continue
+
+                    if (
+                        isinstance(getattr(operator, param), TargetBandDescriptors)
+                        or isinstance(getattr(operator, param), Aggregators)
+                        or isinstance(getattr(operator, param), BinningOutputBands)
+                        or isinstance(getattr(operator, param), BinningVariables)
+                    ):
 
                         parameters_elem.append(getattr(operator, param).to_xml())
 
                     elif isinstance(getattr(operator, param), str):
 
-                        parameters_elem.append(etree.fromstring(getattr(operator, param)))
+                        parameters_elem.append(
+                            etree.fromstring(getattr(operator, param))
+                        )
                     else:
 
                         raise ValueError()
@@ -278,7 +347,9 @@ class Graph:
                         if getattr(operator, param)[0] != "<":
                             parameter_elem.text = getattr(operator, param)
                         else:
-                            parameter_elem.append(etree.fromstring(getattr(operator, param)))
+                            parameter_elem.append(
+                                etree.fromstring(getattr(operator, param))
+                            )
 
         node_elem.attrib["id"] = node_id
 
