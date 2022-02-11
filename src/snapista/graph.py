@@ -2,6 +2,7 @@ import os
 import subprocess
 import tempfile
 import lxml.etree as etree
+from time import sleep
 from snappy import GPF
 from xml.sax.saxutils import unescape
 from snapista.binning.output_bands import BinningOutputBands
@@ -217,7 +218,7 @@ class Graph:
                     "BinningVariables",
                 ]
             ]:
-              
+
                 if param in [
                     "targetBandDescriptors",
                     "aggregatorConfigs",
@@ -226,8 +227,14 @@ class Graph:
                     "postProcessorConfig",
                     "productCustomizerConfig",
                 ]:
-                  
-                    if (param in ["bandConfigurations", "variableConfigs", "postProcessorConfig", "productCustomizerConfig" ] and not getattr(operator, param)): continue
+
+                    if param in [
+                        "bandConfigurations",
+                        "variableConfigs",
+                        "postProcessorConfig",
+                        "productCustomizerConfig",
+                    ] and not getattr(operator, param):
+                        continue
 
                     if (
                         isinstance(getattr(operator, param), TargetBandDescriptors)
@@ -247,8 +254,10 @@ class Graph:
                         raise ValueError()
 
                 else:
-                    try: 
-                        p_elem = self.root.xpath(xpath_expr + "/parameters/%s" % param)[0]
+                    try:
+                        p_elem = self.root.xpath(xpath_expr + "/parameters/%s" % param)[
+                            0
+                        ]
 
                         if getattr(operator, param) is not None:
                             if getattr(operator, param)[0] != "<":
@@ -322,7 +331,13 @@ class Graph:
                     "productCustomizerConfig",
                 ]:
                     print(param, getattr(operator, param))
-                    if (param in ["bandConfigurations", "variableConfigs", "postProcessorConfig", "productCustomizerConfig" ] and not getattr(operator, param)): continue
+                    if param in [
+                        "bandConfigurations",
+                        "variableConfigs",
+                        "postProcessorConfig",
+                        "productCustomizerConfig",
+                    ] and not getattr(operator, param):
+                        continue
 
                     if (
                         isinstance(getattr(operator, param), TargetBandDescriptors)
@@ -370,7 +385,7 @@ class Graph:
         Raises:
             None.
         """
-        
+
         with open(filename, "w") as file:
             file.write('<?xml version="1.0" encoding="UTF-8"?>\n')
             file.write(unescape(etree.tostring(self.root, pretty_print=True).decode()))
@@ -390,18 +405,19 @@ class Graph:
         """
 
         def _run_command(command, **kwargs):
+            def _stream_process(process):
+                go = process.poll() is None
+                for line in process.stdout:
+                    print(line.decode(encoding="utf-8"))
+                return go, process.poll()
 
-            process = subprocess.Popen(args=command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,  **kwargs)
-            while True:
-                output = process.stdout.readline()
-                err = process.stderr.readline()
-                if output.decode() == "" and process.poll() is not None:
-                    break
-                if output:
-                    print(output.strip().decode())
-                if err:
-                    print(err.strip().decode())
-            rc = process.poll()
+            process = subprocess.Popen(
+                args=command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+            )
+            go, rc = _stream_process(process)
+            while go:
+                sleep(0.1)
+                go, rc = _stream_process(process)
 
             return rc
 

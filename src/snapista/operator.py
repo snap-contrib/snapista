@@ -14,13 +14,19 @@ class Operator(SimpleNamespace):
     def __str__(self):
 
         return "{}:\n\t{}".format(
-            self.operator, "\n\t".join(["{}='{}'".format(key, value) for key, value in self.to_dict().items()])
+            self.operator,
+            "\n\t".join(
+                ["{}='{}'".format(key, value) for key, value in self.to_dict().items()]
+            ),
         )
 
     def __repr__(self):
 
         return "Operator('{}', {})".format(
-            self.operator, ", ".join(["{}='{}'".format(key, value) for key, value in self.to_dict().items()])
+            self.operator,
+            ", ".join(
+                ["{}='{}'".format(key, value) for key, value in self.to_dict().items()]
+            ),
         )
 
     def to_dict(self):
@@ -39,7 +45,11 @@ class Operator(SimpleNamespace):
         Raises:
             None.
         """
-        op_spi = GPF.getDefaultInstance().getOperatorSpiRegistry().getOperatorSpi(self.operator)
+        op_spi = (
+            GPF.getDefaultInstance()
+            .getOperatorSpiRegistry()
+            .getOperatorSpi(self.operator)
+        )
 
         print("Operator name: {}\n".format(op_spi.getOperatorDescriptor().getAlias()))
         print("Description: {}".format(op_spi.getOperatorDescriptor().getDescription()))
@@ -81,7 +91,9 @@ class Operator(SimpleNamespace):
         Raises:
             None.
         """
-        ProductIOPlugInManager = jpy.get_type("org.esa.snap.core.dataio.ProductIOPlugInManager")
+        ProductIOPlugInManager = jpy.get_type(
+            "org.esa.snap.core.dataio.ProductIOPlugInManager"
+        )
 
         if method == "Read":
             plugins = ProductIOPlugInManager.getInstance().getAllReaderPlugIns()

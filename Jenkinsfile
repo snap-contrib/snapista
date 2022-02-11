@@ -13,15 +13,16 @@ pipeline {
                 sh '''#!/usr/bin/env bash
                 conda build --version
                 conda --version
+                mamba clean -a -y 
                 '''
             }
         }
         stage('Build') {
             steps {
                 sh '''#!/usr/bin/env bash
-                #mkdir -p /home/jovyan/conda-bld/work
+                mkdir -p /home/jovyan/conda-bld/work
                 cd $WORKSPACE
-                mamba build --no-locking .
+                mamba build .  #--no-locking .
                 '''
             }
         }
@@ -33,7 +34,7 @@ pipeline {
                 export PACKAGENAME=snapista
                 label=main
                 if [ "$GIT_BRANCH" = "develop" ]; then label=dev; fi
-                anaconda --verbose upload --no-progress --force --user Terradue --label $label /srv/conda/envs/env_conda/conda-bld/*/$PACKAGENAME-*.tar.bz2
+                anaconda upload --no-progress --force --user Terradue --label $label /srv/conda/envs/env_conda/conda-bld/*/$PACKAGENAME-*.tar.bz2
                 '''}
             }
         }

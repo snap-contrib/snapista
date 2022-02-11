@@ -20,7 +20,11 @@ class OperatorParams:
         Raises:
             None.
         """
-        op_spi = GPF.getDefaultInstance().getOperatorSpiRegistry().getOperatorSpi(self.operator)
+        op_spi = (
+            GPF.getDefaultInstance()
+            .getOperatorSpiRegistry()
+            .getOperatorSpi(self.operator)
+        )
 
         op_params = op_spi.getOperatorDescriptor().getParameterDescriptors()
 

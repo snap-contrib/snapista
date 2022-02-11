@@ -27,7 +27,7 @@
 	"forwardPorts": [8888],
 	"postCreateCommand": "/srv/conda/envs/env_snap/bin/python setup.py install",
 	"mounts": [
-		"source=${localEnv:HOME}/Downloads/S3-binning,target=/data,type=bind,consistency=cached",
+		"source=${localEnv:HOME}/Downloads,target=/data,type=bind,consistency=cached",
 	]
 	
 }
