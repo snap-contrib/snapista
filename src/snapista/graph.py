@@ -283,7 +283,7 @@ class Graph:
 
             elif isinstance(source, dict):
 
-                for key, value in source.iteritems():
+                for key, value in source.items():
 
                     source_product_elem = etree.SubElement(sources_elem, key)
                     source_product_elem.text = value
@@ -346,14 +346,12 @@ class Graph:
 
                     parameter_elem = etree.SubElement(parameters_elem, param)
 
-                    if getattr(operator, param) is not None:
-                        if getattr(operator, param)[0] != "<":
-                            parameter_elem.text = getattr(operator, param)
+                    val = getattr(operator, param)
+                    if val is not None:
+                        if len(str(val)) > 0 and str(val)[0] == "<":
+                            p_elem.text.append(etree.fromstring(val))
                         else:
-                            parameter_elem.append(
-                                etree.fromstring(getattr(operator, param))
-                            )
-
+                            p_elem.text = str(val)
         node_elem.attrib["id"] = node_id
 
         operator_elem.text = operator.operator
